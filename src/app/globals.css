@@ -99,7 +99,7 @@ body {
 }
 
 .nav-inner {
-  height: 82px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -108,12 +108,12 @@ body {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 11px;
 }
 
 .brand-logo-img {
-  width: 52px;
-  height: 52px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   display: block;
 }
@@ -121,16 +121,16 @@ body {
 .brand-wordmark {
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: 1.45rem;
-  letter-spacing: 0.18em;
+  font-size: 1.15rem;
+  letter-spacing: 0.16em;
   color: var(--text-primary);
 }
 
 /* Header */
 .palette-header {
-  padding: 32px 0 20px;
+  padding: 24px 0 16px;
   background-color: transparent;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
 }
 
 .palette-badge {

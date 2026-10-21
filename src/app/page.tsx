@@ -121,8 +121,8 @@ export default function HomePage() {
             <Image
               src="/logo-transparent.png"
               alt="Ordryth Mark"
-              width={52}
-              height={52}
+              width={36}
+              height={36}
               className="brand-logo-img"
               priority
             />
