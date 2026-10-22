@@ -8,81 +8,93 @@ import logoTransparent from "../../public/logo-transparent.png";
 
 interface Project {
   id: string;
-  category: "Product & Software" | "Design Systems" | "Applied AI" | "Brand Architecture";
-  date: string;
-  client: string;
+  number: string;
+  category: "Products & Software" | "Applied AI" | "Engineering";
+  secondaryCategories?: string[];
   title: string;
   description: string;
   metric: string;
-  linkText?: string;
+  linkText: string;
+  href: string;
+  isExternal?: boolean;
 }
+
+const CATEGORIES = [
+  "All",
+  "Products & Software",
+  "Applied AI",
+  "Engineering",
+];
 
 const ORDRYTH_PROJECTS: Project[] = [
   {
-    id: "aether",
-    category: "Product & Software",
-    date: "Q1 2026",
-    client: "Autonomous Computing Lab",
-    title: "Aether OS: Spatial computing environment for multi-modal agent orchestration",
+    id: "imagica-desktop",
+    number: "01",
+    category: "Products & Software",
+    title: "Imagica Desktop: Dedicated creative AI workspace for image generation & editing",
     description:
-      "A next-generation desktop workspace engineered for local-first data persistence, multi-agent canvas manipulation, and deterministic 60fps interaction rendering.",
-    metric: "Sub-16ms Frametime • Rust & WebGPU",
-    linkText: "View case study",
+      "A creative AI workspace for image generation and editing, bringing powerful models and intuitive creative controls into a dedicated desktop application.",
+    metric: "AI Creation · Desktop Software",
+    linkText: "Explore Imagica Desktop",
+    href: "https://imagica.co.in/desktop",
+    isExternal: true,
   },
   {
-    id: "chronos",
-    category: "Design Systems",
-    date: "Q4 2025",
-    client: "Chronos Infrastructure",
-    title: "Chronos Compute: Real-time telemetry dashboard & synchronized token system",
-    description:
-      "A mission-critical observability platform for distributed GPU clusters, delivering microsecond visualization and token engines binding Figma, React, and native Rust.",
-    metric: "250+ Components • 1.2ms P99 Latency",
-    linkText: "View design tokens",
-  },
-  {
-    id: "kalon",
+    id: "generative-ai-systems",
+    number: "02",
     category: "Applied AI",
-    date: "Q4 2025",
-    client: "Kalon BioSciences",
-    title: "Kalon Intelligence: Diagnostic workstation and clinical biochemical parser",
+    title: "Generative AI Systems: Multi-model infrastructure & visual refinement pipelines",
     description:
-      "High-precision diagnostic platform integrating generative molecular structure analysis with millimeter surgical telemetry and verifiable FDA-cleared design flows.",
-    metric: "99.4% Model Fit • Clinical AI",
-    linkText: "Explore platform",
+      "The AI infrastructure behind Imagica's creative workflows, connecting generative models with tools for image creation, refinement, and transformation.",
+    metric: "Generative AI · Model Integration",
+    linkText: "Explore architecture",
+    href: "/research#generative-ai",
   },
   {
-    id: "verve",
-    category: "Brand Architecture",
-    date: "Q3 2025",
-    client: "Verve Robotics",
-    title: "Verve Kinetic: Dynamic motion identity and industrial hardware packaging",
+    id: "local-ai-computing",
+    number: "03",
+    category: "Engineering",
+    secondaryCategories: ["Applied AI"],
+    title: "Local AI Computing: Hardware-aware execution & sovereign desktop inference",
     description:
-      "A comprehensive brand transformation, algorithmic kinetic identity system, and physical hardware packaging suite for autonomous industrial robotics.",
-    metric: "Red Dot Award 2025 • Global Relaunch",
-    linkText: "View identity",
+      "Hardware-aware AI execution designed to make creative workflows adapt to available computing resources, bringing local inference closer to the user.",
+    metric: "Local Inference · Performance Engineering",
+    linkText: "Discover our approach",
+    href: "/research#local-ai",
   },
   {
-    id: "monolith",
-    category: "Design Systems",
-    date: "Q2 2025",
-    client: "Foundry Monolith",
-    title: "Monolith Variable: Algorithmic typeface family for dense engineering consoles",
+    id: "imagica-studio",
+    number: "04",
+    category: "Products & Software",
+    title: "Imagica Studio: Unified creative environment for models, ratios & styling",
     description:
-      "An open-source variable typeface suite and editorial design token library crafted specifically for scientific workstations, financial tickers, and code editors.",
-    metric: "12 Axes • 48 Instances • Open Source",
-    linkText: "Specimen & tokens",
+      "A unified creative environment that brings model selection, generation settings, aspect ratios, and visual styles into one streamlined workflow.",
+    metric: "Product Design · Creative Tools",
+    linkText: "Explore the studio",
+    href: "#showcase",
   },
   {
-    id: "prism",
-    category: "Product & Software",
-    date: "Q1 2025",
-    client: "Prism Decentralized",
-    title: "Prism Protocol: Cryptographic treasury suite & zero-knowledge interface",
+    id: "ordryth-engineering",
+    number: "05",
+    category: "Engineering",
+    title: "ORDRYTH Engineering: Foundational architecture for sovereign software systems",
     description:
-      "A high-assurance asset governance suite and zero-knowledge verification interface built for institutional treasuries and verifiable multi-party computation.",
-    metric: "$2.4B Secured • Zero Exploits",
-    linkText: "Read whitepaper",
+      "The engineering foundation behind ORDRYTH products, combining software architecture, AI integration, and performance-conscious design to turn complex systems into usable technology.",
+    metric: "Software Architecture · AI Engineering",
+    linkText: "Our methodology",
+    href: "/about#engineering",
+  },
+  {
+    id: "ordryth-company",
+    number: "06",
+    category: "Products & Software",
+    secondaryCategories: ["Applied AI", "Engineering"],
+    title: "ORDRYTH: AI and software technology company building useful computing products",
+    description:
+      "An AI and software technology company building products that make advanced computing more accessible, creative workflows more capable, and technology more useful.",
+    metric: "Company · Technology · Products",
+    linkText: "Discover ORDRYTH",
+    href: "/about",
   },
 ];
 
@@ -94,24 +106,21 @@ export default function OrdrythHomePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [imageZoomOpen, setImageZoomOpen] = useState<boolean>(false);
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText("studio@ordryth.com").then(() => {
-      setToastMessage("Copied studio@ordryth.com to clipboard!");
-      setTimeout(() => setToastMessage(null), 2400);
-    });
-  };
 
   const filteredProjects =
     activeCategory === "All"
       ? ORDRYTH_PROJECTS
-      : ORDRYTH_PROJECTS.filter((p) => p.category === activeCategory);
+      : ORDRYTH_PROJECTS.filter(
+          (p) => p.category === activeCategory || p.secondaryCategories?.includes(activeCategory)
+        );
 
   const searchedProjects = searchQuery.trim()
     ? ORDRYTH_PROJECTS.filter(
       (p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.client.toLowerCase().includes(searchQuery.toLowerCase())
+        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.metric.toLowerCase().includes(searchQuery.toLowerCase())
     )
     : [];
 
@@ -136,10 +145,16 @@ export default function OrdrythHomePage() {
             </Link>
           </div>
 
-          {/* Top-Right: Main Link & 3-line Hamburger Menu Button */}
+          {/* Top-Right: Navigation & 3-line Hamburger Menu Button */}
           <div className="anthropic-nav-right">
-            <Link href="/" className="anthropic-nav-link">
-              Main
+            <Link href="/about" className="anthropic-nav-link">
+              Company
+            </Link>
+            <Link href="/research" className="anthropic-nav-link">
+              Architecture
+            </Link>
+            <Link href="/contact" className="anthropic-nav-link">
+              Contact
             </Link>
             <button
               onClick={() => setMenuOpen(true)}
@@ -204,14 +219,19 @@ export default function OrdrythHomePage() {
         </div>
       </header>
 
-      {/* Editorial Selected Works Section */}
+      {/* Editorial Selected Work & Technology Section */}
       <main className="anthropic-feed-section" id="works">
         <div className="anthropic-feed-header">
-          <h2 className="anthropic-feed-title">Selected works &amp; architecture releases</h2>
+          <div>
+            <h2 className="anthropic-feed-title">Selected work &amp; technology</h2>
+            <p className="anthropic-feed-subtitle">
+              Products and engineering shaping a more capable creative future.
+            </p>
+          </div>
 
           {/* Filter Pills */}
           <div className="anthropic-feed-tabs">
-            {["All", "Product & Software", "Design Systems", "Applied AI", "Brand Architecture"].map((cat) => (
+            {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -225,27 +245,40 @@ export default function OrdrythHomePage() {
 
         {/* 3-Column Editorial Grid for Ordryth */}
         <div className="anthropic-feed-grid">
-          {filteredProjects.map((project) => (
-            <article key={project.id} className="anthropic-card">
-              <div>
-                <div className="anthropic-card-meta">
-                  <span className="text-[#C85A32] font-semibold">{project.category}</span>
-                  <span>&bull;</span>
-                  <span>{project.date}</span>
+          {filteredProjects.map((project) => {
+            const isExternal = project.isExternal;
+            const CardWrapper = isExternal ? "a" : Link;
+            const linkProps = isExternal
+              ? { href: project.href, target: "_blank", rel: "noopener noreferrer" }
+              : { href: project.href };
+
+            return (
+              <CardWrapper
+                key={project.id}
+                {...linkProps}
+                className="anthropic-card"
+                title={`${project.title} — ${project.linkText}`}
+              >
+                <div>
+                  <div className="anthropic-card-meta">
+                    <span className="text-[#C85A32] font-semibold">
+                      {project.number} &mdash; {project.category}
+                    </span>
+                  </div>
+                  <h3 className="anthropic-card-heading">{project.title}</h3>
+                  <p className="anthropic-card-desc">{project.description}</p>
                 </div>
-                <h3 className="anthropic-card-heading">{project.title}</h3>
-                <p className="anthropic-card-desc">{project.description}</p>
-              </div>
-              <div className="pt-3 border-t border-[#EBE6DB] flex items-center justify-between">
-                <span className="text-xs font-mono text-[#7A756D]">
-                  {project.metric}
-                </span>
-                <span className="anthropic-card-link text-xs">
-                  {project.linkText || "Case study"} &rarr;
-                </span>
-              </div>
-            </article>
-          ))}
+                <div className="pt-3 border-t border-[#EBE6DB] flex items-center justify-between">
+                  <span className="text-xs font-mono text-[#7A756D]">
+                    {project.metric}
+                  </span>
+                  <span className="anthropic-card-link text-xs">
+                    {project.linkText} &rarr;
+                  </span>
+                </div>
+              </CardWrapper>
+            );
+          })}
         </div>
       </main>
 
@@ -294,7 +327,7 @@ export default function OrdrythHomePage() {
                 </div>
               ) : (
                 <div className="text-xs text-[#7A756D]">
-                  Quick search: Try &ldquo;Aether&rdquo;, &ldquo;Telemetry&rdquo;, &ldquo;Design System&rdquo;, or &ldquo;Robotics&rdquo;.
+                  Quick search: Try &ldquo;Imagica&rdquo;, &ldquo;Engine&rdquo;, &ldquo;Local AI&rdquo;, or &ldquo;ORDRYTH&rdquo;.
                 </div>
               )}
             </div>
@@ -334,56 +367,53 @@ export default function OrdrythHomePage() {
                 </button>
               </div>
 
-              {/* Main Navigation Links */}
-              <div className="ordryth-drawer-section-title">Main Pages</div>
+              {/* Company Section */}
+              <div className="ordryth-drawer-section-title">Company</div>
               <nav className="ordryth-drawer-links">
-                <Link href="/" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Main (Home)</span>
-                </Link>
                 <Link href="/about" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
                   <span>About</span>
                 </Link>
-                <Link href="/mission" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Our Mission</span>
+                <Link href="/#works" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Our Work</span>
                 </Link>
-                <Link href="/products/imagica" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Products (Imagica)</span>
-                  <span className="ordryth-drawer-link-badge">New</span>
-                </Link>
-                <Link href="/download" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Download Desktop App</span>
-                </Link>
-                <Link href="/enterprise" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Enterprise &amp; Sovereign</span>
-                </Link>
-                <Link href="/research/publications" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Research &amp; Science</span>
-                </Link>
-                <Link href="/careers" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Careers</span>
+                <Link href="/about#engineering" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Our Approach</span>
                 </Link>
                 <Link href="/contact" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
                   <span>Contact</span>
                 </Link>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Sign In / Account</span>
-                </Link>
                 <Link href="/brand" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
-                  <span>Brand Tokens &amp; Palette</span>
+                  <span>Brand</span>
                 </Link>
+              </nav>
+
+              {/* Products */}
+              <div className="ordryth-drawer-section-title">Products</div>
+              <nav className="ordryth-drawer-links">
+                <a
+                  href="https://imagica.co.in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="ordryth-drawer-link"
+                >
+                  <span>Imagica</span>
+                </a>
+                <a
+                  href="https://imagica.co.in/desktop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="ordryth-drawer-link"
+                >
+                  <span>Imagica Desktop</span>
+                  <span className="ordryth-drawer-link-badge">New</span>
+                </a>
               </nav>
             </div>
 
             {/* Drawer Footer */}
             <div className="ordryth-drawer-footer">
-              <button
-                type="button"
-                onClick={copyEmail}
-                className="ordryth-drawer-copy-btn"
-              >
-                <span>studio@ordryth.com</span>
-                <span>Copy</span>
-              </button>
               <div className="ordryth-drawer-company-meta">
                 Ordryth Private Limited &bull; India
               </div>
@@ -419,6 +449,27 @@ export default function OrdrythHomePage() {
             />
             <div className="image-lightbox-hint">
               Imagica AI Multimodal Generative Studio • Native Resolution (1024 × 608)
+            </div>
+            <div style={{ marginTop: "12px", textAlign: "center" }}>
+              <a
+                href="https://imagica.co.in/desktop"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "8px 20px",
+                  backgroundColor: "#C85A32",
+                  color: "#FAF9F5",
+                  fontSize: "0.84rem",
+                  fontWeight: 600,
+                  borderRadius: "9999px",
+                  textDecoration: "none",
+                }}
+              >
+                <span>Get Imagica Desktop &rarr;</span>
+              </a>
             </div>
           </div>
         </div>

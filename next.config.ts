@@ -4,10 +4,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    cpus: 2,
+  },
   async redirects() {
     return [
       // Company & Product pages
-      { source: "/about", destination: "/", permanent: false },
       { source: "/mission", destination: "/", permanent: false },
       { source: "/approach", destination: "/", permanent: false },
       { source: "/leadership", destination: "/", permanent: false },
@@ -23,8 +25,7 @@ const nextConfig: NextConfig = {
       { source: "/investors", destination: "/", permanent: false },
 
       // Research, Engineering & Content pages
-      { source: "/research", destination: "/", permanent: false },
-      { source: "/research/:path*", destination: "/", permanent: false },
+      { source: "/research/:path+", destination: "/", permanent: false },
       { source: "/blog", destination: "/", permanent: false },
       { source: "/blog/:path*", destination: "/", permanent: false },
       { source: "/open-source", destination: "/", permanent: false },
@@ -36,16 +37,13 @@ const nextConfig: NextConfig = {
 
       // Legal pages
       { source: "/legal/:path*", destination: "/", permanent: false },
-      { source: "/privacy", destination: "/", permanent: false },
-      { source: "/terms", destination: "/", permanent: false },
       { source: "/accessibility", destination: "/", permanent: false },
 
       // Careers pages
       { source: "/careers", destination: "/", permanent: false },
       { source: "/careers/:path*", destination: "/", permanent: false },
 
-      // Utility & Contact pages
-      { source: "/contact", destination: "/", permanent: false },
+      // Utility pages
       { source: "/search", destination: "/", permanent: false },
       { source: "/sitemap", destination: "/", permanent: false },
       { source: "/status", destination: "/", permanent: false },
