@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import logoTransparent from "../../../public/logo-transparent.png";
 
 interface Swatch {
   name: string;
@@ -119,7 +120,7 @@ export default function HomePage() {
         <div className="container nav-inner">
           <div className="brand-logo">
             <Image
-              src="/logo-transparent.png"
+              src={logoTransparent}
               alt="Ordryth Mark"
               width={36}
               height={36}
@@ -143,7 +144,6 @@ export default function HomePage() {
         <section className="swatch-section core-section">
           <div className="core-header">
             <h2 className="section-heading core-heading">★ Core 4-Color Foundation (Primary Identity)</h2>
-            <span className="core-badge">Essential Minimal Palette</span>
           </div>
           <p className="section-description">
             The four fundamental colors that establish Ordryth&apos;s visual identity. All extended shades derive from these four.
@@ -183,7 +183,7 @@ export default function HomePage() {
               style={{ backgroundColor: "var(--bg-main)", border: "1px solid var(--border-medium)" }}
             >
               <Image
-                src="/logo-transparent.png"
+                src={logoTransparent}
                 alt="Ordryth Logo on Warm Stone"
                 width={58}
                 height={58}
@@ -197,7 +197,7 @@ export default function HomePage() {
               style={{ backgroundColor: "var(--bg-surface)", border: "1px solid var(--border-medium)" }}
             >
               <Image
-                src="/logo-transparent.png"
+                src={logoTransparent}
                 alt="Ordryth Logo on Pure White"
                 width={58}
                 height={58}
@@ -208,7 +208,7 @@ export default function HomePage() {
 
             <div className="logo-display-card" style={{ backgroundColor: "var(--text-primary)" }}>
               <Image
-                src="/logo-transparent.png"
+                src={logoTransparent}
                 alt="Ordryth Logo Inverted on Charcoal"
                 width={58}
                 height={58}
@@ -221,7 +221,7 @@ export default function HomePage() {
 
             <div className="logo-display-card" style={{ backgroundColor: "var(--accent-terracotta)" }}>
               <Image
-                src="/logo-transparent.png"
+                src={logoTransparent}
                 alt="Ordryth Logo Inverted on Terracotta"
                 width={58}
                 height={58}

@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Footer2 } from "@/components/ui/footer-2";
+import logoTransparent from "../../public/logo-transparent.png";
 
 interface Project {
   id: string;
@@ -86,29 +88,11 @@ const ORDRYTH_PROJECTS: Project[] = [
 
 export default function OrdrythHomePage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const toggleDropdown = (name: string, e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setActiveDropdown((prev) => (prev === name ? null : name));
-  };
-
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest(".nav-dropdown-wrap")) {
-        setActiveDropdown(null);
-      }
-    };
-    if (activeDropdown) {
-      window.addEventListener("click", handleOutsideClick);
-    }
-    return () => window.removeEventListener("click", handleOutsideClick);
-  }, [activeDropdown]);
+  const [imageZoomOpen, setImageZoomOpen] = useState<boolean>(false);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("studio@ordryth.com").then(() => {
@@ -136,158 +120,49 @@ export default function OrdrythHomePage() {
       {/* Top Floating Editorial Navbar */}
       <nav className="anthropic-nav">
         <div className="anthropic-nav-inner">
-          {/* Left Navigation Pills */}
+          {/* Top-Left Corner: Brand Logo */}
           <div className="anthropic-nav-left">
-            <Link href="#works" className="anthropic-pill">
-              Selected Works
-            </Link>
-
-            <div className="nav-dropdown-wrap">
-              <button
-                onClick={() => toggleDropdown("disciplines")}
-                className="anthropic-pill"
-              >
-                <span>Disciplines</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              {activeDropdown === "disciplines" && (
-                <div className="nav-dropdown-menu" style={{ width: "260px" }}>
-                  <div className="nav-dropdown-meta">Studio Disciplines</div>
-                  <a href="#works" onClick={() => setActiveDropdown(null)} className="nav-dropdown-item">
-                    01 &bull; Digital Product Architecture
-                  </a>
-                  <a href="#works" onClick={() => setActiveDropdown(null)} className="nav-dropdown-item">
-                    02 &bull; Tokenized Design Systems
-                  </a>
-                  <a href="#works" onClick={() => setActiveDropdown(null)} className="nav-dropdown-item">
-                    03 &bull; Applied AI &amp; Spatial Canvas
-                  </a>
-                  <a href="#works" onClick={() => setActiveDropdown(null)} className="nav-dropdown-item">
-                    04 &bull; Brand Architecture &amp; Type
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <div className="nav-dropdown-wrap">
-              <button
-                onClick={() => toggleDropdown("philosophy")}
-                className="anthropic-pill"
-              >
-                <span>Philosophy</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              {activeDropdown === "philosophy" && (
-                <div className="nav-dropdown-menu" style={{ width: "250px" }}>
-                  <div className="nav-dropdown-meta">Core Philosophy</div>
-                  <div className="nav-dropdown-card">
-                    <strong>Form Follows Clarity</strong>
-                    Eliminating decorative noise so function becomes self-evident.
-                  </div>
-                  <div className="nav-dropdown-divider" />
-                  <div className="nav-dropdown-card">
-                    <strong>Radical Reduction</strong>
-                    Software built like fine horology: mathematically sound and serene.
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link href="/brand" className="anthropic-pill">
-              Brand Palette
-            </Link>
-          </div>
-
-          {/* Centered Brand Wordmark with Logo */}
-          <div className="anthropic-nav-center">
             <Link href="/" className="anthropic-logo">
               <Image
-                src="/logo-transparent.png"
+                src={logoTransparent}
                 alt="Ordryth Mark"
-                width={24}
-                height={24}
+                width={26}
+                height={26}
                 className="brand-logo-img"
-                style={{ marginRight: "6px" }}
+                style={{ marginRight: "8px" }}
                 priority
               />
               <span>ORDRYTH</span>
             </Link>
           </div>
 
-          {/* Right Navigation Actions */}
+          {/* Top-Right: Main Link & 3-line Hamburger Menu Button */}
           <div className="anthropic-nav-right">
-            <div className="nav-dropdown-wrap">
-              <button
-                onClick={() => toggleDropdown("studio")}
-                className="anthropic-pill"
-              >
-                <span>Studio</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              {activeDropdown === "studio" && (
-                <div className="nav-dropdown-menu align-right" style={{ width: "230px" }}>
-                  <div className="nav-dropdown-meta">ORDRYTH PRIVATE LIMITED &bull; INDIA</div>
-                  <div className="nav-dropdown-card">
-                    India &bull; Technology &amp; Design Laboratory
-                  </div>
-                  <div className="nav-dropdown-divider" />
-                  <Link href="/brand" onClick={() => setActiveDropdown(null)} className="nav-dropdown-item">
-                    Design Tokens &amp; Palette &rarr;
-                  </Link>
-                  <button onClick={() => { copyEmail(); setActiveDropdown(null); }} className="nav-dropdown-item">
-                    Copy studio@ordryth.com
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <button onClick={copyEmail} className="anthropic-pill">
-              <span>Start a Project</span>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-
-            {/* Search Icon Button */}
+            <Link href="/" className="anthropic-nav-link">
+              Main
+            </Link>
             <button
-              onClick={() => setSearchOpen(true)}
-              aria-label="Search"
-              className="anthropic-icon-btn"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open navigation menu"
+              title="Menu"
+              className="ordryth-hamburger-btn"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </button>
-
-            {/* Hamburger Menu Button */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Menu"
-              className="anthropic-icon-btn"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="7" x2="21" y2="7" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="17" x2="21" y2="17" />
-              </svg>
+              <span className="hamburger-line" />
+              <span className="hamburger-line" />
+              <span className="hamburger-line" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Headline Section tailored for Ordryth */}
-      <header className="anthropic-hero-wrap">
-        <h1 className="anthropic-headline">
-          <strong>Digital products and interfaces that put craft at the frontier.</strong>{" "}
-          Software will shape how humanity collaborates with intelligence. Ordryth is an independent design laboratory dedicated to high-conviction tools and timeless systems.
+      {/* Hero Header Section */}
+      <header className="ordryth-hero-wrap">
+        <h1 className="ordryth-hero-title">
+          Architecting instruments of clarity for complex computing.
         </h1>
+        <p className="ordryth-hero-subhead">
+          ORDRYTH is a technology company developing AI-powered applications, intelligent software systems, and computational tools. We turn complex technical ideas into practical products that help people create, work, and solve problems more effectively.
+        </p>
 
         {/* Full-Scale Showcase: MacBook Pro Laptop displaying Imagica Desktop Application */}
         <div className="laptop-full-showcase-wrap">
@@ -301,17 +176,20 @@ export default function OrdrythHomePage() {
               </div>
 
               {/* Display Screen running Imagica Desktop */}
-              <div className="macbook-screen">
+              <div
+                className="macbook-screen"
+                onClick={() => setImageZoomOpen(true)}
+                title="Click to view Imagica Studio in full resolution"
+              >
                 <Image
-                  src="/imagica-desktop-ui.jpg"
-                  alt="Imagica Desktop Application — Multimodal Generative AI Node Studio"
-                  width={1440}
-                  height={900}
+                  src="/imagica-studio-ui.jpg"
+                  alt="Imagica Desktop Application — AI Multimodal Generative Studio"
+                  width={1024}
+                  height={608}
                   priority
+                  unoptimized
                   className="macbook-screen-img"
                 />
-                {/* Subtle Screen Reflection Glare */}
-                <div className="macbook-screen-glare" />
               </div>
             </div>
 
@@ -371,97 +249,8 @@ export default function OrdrythHomePage() {
         </div>
       </main>
 
-      {/* Editorial High-Craft Footer for Ordryth */}
-      <footer className="ordryth-footer">
-        <div className="ordryth-footer-inner">
-          <div className="ordryth-footer-top">
-            {/* Column 1: Brand & Mission */}
-            <div className="footer-brand-col">
-              <div className="footer-brand-row">
-                <Image
-                  src="/logo-transparent.png"
-                  alt="Ordryth Logo"
-                  width={28}
-                  height={28}
-                  className="brand-logo-img"
-                />
-                <span className="footer-brand-wordmark">ORDRYTH</span>
-              </div>
-              <p className="footer-brand-desc">
-                Independent technology brand and product design laboratory. Architecting sovereign software products, transcendent interfaces, and timeless visual systems.
-              </p>
-              <div className="footer-status-pill">
-                <span className="w-2 h-2 rounded-full bg-[#C85A32]" />
-                <span>Accepting select Q4 2026 commissions</span>
-              </div>
-            </div>
-
-            {/* Column 2: Selected Works */}
-            <div className="footer-links-col">
-              <h4 className="footer-heading">Selected Works</h4>
-              <ul className="footer-list">
-                <li><a href="#works" className="footer-link">Aether OS</a></li>
-                <li><a href="#works" className="footer-link">Chronos Compute</a></li>
-                <li><a href="#works" className="footer-link">Verve Kinetic</a></li>
-                <li><a href="#works" className="footer-link">Kalon Intelligence</a></li>
-                <li><a href="#works" className="footer-link">Monolith Variable</a></li>
-                <li><a href="#works" className="footer-link">Prism Protocol</a></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Disciplines */}
-            <div className="footer-links-col">
-              <h4 className="footer-heading">Disciplines</h4>
-              <ul className="footer-list">
-                <li><a href="#works" className="footer-link">Digital Product Architecture</a></li>
-                <li><a href="#works" className="footer-link">Tokenized Design Systems</a></li>
-                <li><a href="#works" className="footer-link">Applied AI &amp; Spatial Canvas</a></li>
-                <li><a href="#works" className="footer-link">Brand Architecture &amp; Type</a></li>
-                <li><a href="#works" className="footer-link">Engineering Tolerances</a></li>
-              </ul>
-            </div>
-
-            {/* Column 4: Studio Practice */}
-            <div className="footer-links-col">
-              <h4 className="footer-heading">Studio Practice</h4>
-              <ul className="footer-list">
-                <li><Link href="/brand" className="footer-link">Design Tokens &amp; Palette</Link></li>
-                <li>
-                  <button onClick={copyEmail} className="footer-link">
-                    studio@ordryth.com
-                  </button>
-                </li>
-                <li><span className="footer-link" style={{ cursor: "default", color: "#8A847B" }}>London &bull; San Francisco</span></li>
-                <li><span className="footer-link" style={{ cursor: "default", color: "#8A847B" }}>Est. 2024 &bull; Independent</span></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="ordryth-footer-bottom">
-            <div>&copy; 2026 Ordryth Design Studio. All rights reserved.</div>
-            <div className="footer-legal-links">
-              <button onClick={copyEmail} className="footer-legal-link">
-                Inquire for Q4 2026
-              </button>
-              <Link href="/brand" className="footer-legal-link">
-                Color Scheme
-              </Link>
-              <a href="mailto:studio@ordryth.com" className="footer-legal-link">
-                Direct Email
-              </a>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="scroll-top-btn"
-                aria-label="Back to top"
-              >
-                <span>Back to Top</span>
-                <span>&uarr;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Footer 2 Component with subtle dotted grid overlay and AI actions */}
+      <Footer2 />
 
       {/* Search Modal */}
       {searchOpen && (
@@ -513,44 +302,123 @@ export default function OrdrythHomePage() {
         </div>
       )}
 
-      {/* Hamburger Drawer Menu */}
+      {/* Slide-out Navigation Drawer Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/30 backdrop-blur-xs">
-          <div className="bg-[#FAF9F5] border-l border-[#E6E1D5] w-full max-w-sm h-full p-8 shadow-2xl flex flex-col justify-between">
+        <div
+          className="ordryth-drawer-overlay"
+          onClick={() => setMenuOpen(false)}
+        >
+          <div
+            className="ordryth-drawer-panel"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div>
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-2">
+              {/* Drawer Header */}
+              <div className="ordryth-drawer-header">
+                <Link href="/" onClick={() => setMenuOpen(false)} className="ordryth-drawer-brand">
                   <Image
-                    src="/logo-transparent.png"
+                    src={logoTransparent}
                     alt="Ordryth Logo"
-                    width={28}
-                    height={28}
+                    width={26}
+                    height={26}
+                    className="brand-logo-img"
                   />
-                  <span className="font-bold text-lg tracking-widest font-sans">ORDRYTH</span>
-                </div>
+                  <span className="ordryth-drawer-brand-name">ORDRYTH</span>
+                </Link>
                 <button
                   onClick={() => setMenuOpen(false)}
-                  className="w-8 h-8 rounded-full border border-[#E6E1D5] flex items-center justify-center text-sm"
+                  aria-label="Close menu"
+                  className="ordryth-drawer-close"
                 >
                   ✕
                 </button>
               </div>
 
-              <div className="flex flex-col gap-4 text-base font-medium">
-                <a href="#works" onClick={() => setMenuOpen(false)} className="hover:text-[#C85A32]">Selected Works</a>
-                <a href="#works" onClick={() => setMenuOpen(false)} className="hover:text-[#C85A32]">Disciplines &amp; Architecture</a>
-                <Link href="/brand" onClick={() => setMenuOpen(false)} className="hover:text-[#C85A32]">Brand Palette &amp; Tokens</Link>
-                <button onClick={() => { copyEmail(); setMenuOpen(false); }} className="text-left hover:text-[#C85A32]">
-                  Copy Studio Email
-                </button>
-                <a href="mailto:studio@ordryth.com" onClick={() => setMenuOpen(false)} className="hover:text-[#C85A32]">
-                  Direct Inquiry &rarr;
-                </a>
-              </div>
+              {/* Main Navigation Links */}
+              <div className="ordryth-drawer-section-title">Main Pages</div>
+              <nav className="ordryth-drawer-links">
+                <Link href="/" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Main (Home)</span>
+                </Link>
+                <Link href="/about" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>About</span>
+                </Link>
+                <Link href="/mission" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Our Mission</span>
+                </Link>
+                <Link href="/products/imagica" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Products (Imagica)</span>
+                  <span className="ordryth-drawer-link-badge">New</span>
+                </Link>
+                <Link href="/download" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Download Desktop App</span>
+                </Link>
+                <Link href="/enterprise" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Enterprise &amp; Sovereign</span>
+                </Link>
+                <Link href="/research/publications" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Research &amp; Science</span>
+                </Link>
+                <Link href="/careers" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Careers</span>
+                </Link>
+                <Link href="/contact" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Contact</span>
+                </Link>
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Sign In / Account</span>
+                </Link>
+                <Link href="/brand" onClick={() => setMenuOpen(false)} className="ordryth-drawer-link">
+                  <span>Brand Tokens &amp; Palette</span>
+                </Link>
+              </nav>
             </div>
 
-            <div className="pt-6 border-t border-[#E6E1D5] text-xs text-[#7A756D]">
-              Ordryth Design Studio &bull; London &amp; San Francisco
+            {/* Drawer Footer */}
+            <div className="ordryth-drawer-footer">
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="ordryth-drawer-copy-btn"
+              >
+                <span>studio@ordryth.com</span>
+                <span>Copy</span>
+              </button>
+              <div className="ordryth-drawer-company-meta">
+                Ordryth Private Limited &bull; India
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Image Lightbox Modal */}
+      {imageZoomOpen && (
+        <div
+          className="image-lightbox-overlay"
+          onClick={() => setImageZoomOpen(false)}
+        >
+          <div
+            className="image-lightbox-inner"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setImageZoomOpen(false)}
+              aria-label="Close fullscreen view"
+              className="image-lightbox-close"
+            >
+              ✕
+            </button>
+            <Image
+              src="/imagica-studio-ui.jpg"
+              alt="Imagica Desktop Application — Full Native Resolution"
+              width={1024}
+              height={608}
+              unoptimized
+              className="image-lightbox-img"
+            />
+            <div className="image-lightbox-hint">
+              Imagica AI Multimodal Generative Studio • Native Resolution (1024 × 608)
             </div>
           </div>
         </div>

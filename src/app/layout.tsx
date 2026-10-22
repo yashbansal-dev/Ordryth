@@ -3,8 +3,8 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ordryth — Independent Technology Brand & Design Studio",
-  description: "Independent technology brand and design laboratory architecting sovereign software products, transcendent interfaces, and timeless visual systems.",
+  title: "Ordryth — Ordryth Private Limited, India",
+  description: "Ordryth Private Limited (India) is an independent technology and software company architecting sovereign software products, transcendent interfaces, and timeless visual systems.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
